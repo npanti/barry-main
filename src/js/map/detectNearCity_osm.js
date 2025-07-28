@@ -23,12 +23,12 @@ export const detectNearCity_osm = (point) => {
           const address = data.address;
           
           // Try to find city/town/village in order of preference
-          const cityName = address.city || 
-                          address.town || 
-                          address.village || 
-                          address.municipality || 
-                          address.hamlet ||
-                          address.suburb;
+            const cityName = address.suburb ||
+                              address.hamlet ||
+                              address.municipality ||
+                              address.village ||
+                              address.town ||
+                              address.city;
           
           if (cityName) {
             window.$barry.log(
