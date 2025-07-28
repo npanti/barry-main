@@ -1,8 +1,9 @@
+// Define a global object on the window called $barry to store all app-wide settings and references
 window.$barry = {
+  // Calculation methods with their labels and colors
   methods: {
     longMiddle: {
-      label:
-        "Le mi-chemin en temps sur le plus long trajet entre toutes les villes",
+      label: "Centre géométrique des points à mi-parcours en temps de tous les trajets entre villes",
       color: "#10b981",
     },
     average: {
@@ -14,18 +15,26 @@ window.$barry = {
       color: "#f59e0b",
     },
   },
+
+  // General color settings
   addressColor: "#111827",
   resultColor: "#EF4444",
   roadColor: "#47695B",
-  calculateMode: "time",
-  calculateTransport: "Voiture",
-  calculateToll: true,
-  addressesCount: 0,
-  places: {},
-  layers: {},
-  addressToCalc: {},
-  urlTourismAPI: "https://titi.gougouzian.fr",
-  tourismCategory: [
+
+  // Calculation settings
+  calculateMode: "time",           // Calculation mode (e.g., by time)
+  calculateTransport: "Voiture",   // Transport type (e.g., car)
+  calculateToll: true,             // Whether to include tolls
+
+  // Data containers
+  addressesCount: 0,               // Number of addresses
+  places: {},                      // Place data
+  layers: {},                      // Map layers
+  addressToCalc: {},               // Addresses to calculate
+
+  // API settings
+  urlTourismAPI: "https://titi.gougouzian.fr", // Tourism API endpoint
+  tourismCategory: [                          // Categories for tourism POIs
     "Sports",
     "Cultural",
     "Hotel",
@@ -34,7 +43,9 @@ window.$barry = {
     "Event",
     "Tour",
   ],
-  pois: {},
+  pois: {},                                   // Points of interest
+
+  // Cached DOM elements for UI manipulation
   $addressesWrapper: document.getElementById("addresses-wrapper"),
   $augmentConfiguration: document.getElementById("augmentConfiguration"),
   $augmentWelcome: document.getElementById("augmentWelcome"),
