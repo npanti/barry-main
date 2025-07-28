@@ -3,7 +3,7 @@ export const calcPath_osm = (start, end, key, routeInstructions = false) => {
   return new Promise((resolve, reject) => {
     // Format coordinates for OSRM API: longitude,latitude;longitude,latitude
     const coordinates = `${start[0]},${start[1]};${end[0]},${end[1]}`;
-    const url = `http://router.project-osrm.org/route/v1/car/${coordinates}?geometries=geojson&overview=full`;
+    const url = `https://router.project-osrm.org/route/v1/car/${coordinates}?geometries=geojson&overview=full`;
 
     // Add steps parameter if route instructions are needed
     const finalUrl = routeInstructions ? `${url}&steps=true` : url;
