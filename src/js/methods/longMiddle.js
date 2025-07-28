@@ -23,103 +23,58 @@ export const longMiddle = () => {
             calcPath_osm(
               window.$barry.places[keys[i]],
               window.$barry.places[keys[j]],
-              `${keys[i]};${keys[j]}`
+              `${keys[i]};${keys[j]}`,
+              true
             )
           );
           }
 
     // Once all routes are calculated, determine the longest one
-    Promise.all(prms).then((values) => {
-      // Initialize trackers for maximum distance/time and key of that route
-      let maxDist = 0;
-      let maxTime = 0;
-      let keep = values[0].key;
-      console.log(values);
-
-      // Iterate through each route result to log details and find the longest
-      for (let i = 0; i < values.length; i++) {
-        // Extract time and distance from the result
-        const t = Number.parseFloat(values[i].totalTime);
-        const d = Number.parseFloat(values[i].totalDistance);
-        const hours = Math.floor(t / 3600);
-        const mins = Math.floor((t / 60) % 60);
-        const cities = values[i].key.split(";");
-
-        // Log each route's distance and duration
-        window.$barry.log(
-          `Entre "${document.querySelector(`input[data-city="${cities[0]}"]`).value}" et ` +
-          `"${document.querySelector(`input[data-city="${cities[1]}"]`).value}" il y a ${Math.round((100 * d) / 1000) / 100} km en ${hours}h${mins < 10 ? `0${mins}` : mins}`,
-          1
-        );
-
-        // Update longest route based on selected calculation mode
-        if (
-          (window.$barry.calculateMode === "time" && t > maxTime) ||
-          (window.$barry.calculateMode === "distance" && d > maxDist)
-        ) {
-          maxDist = d;
-          maxTime = t;
-          keep = values[i].key;
-        }
-      }
-
-      // Log which route is the longest
-      const points = keep.split(";");
-      window.$barry.log(
-        `Le trajet le plus long (en ${window.$barry.calculateMode === "time" ? "temps" : "distance"}) est donc entre ` +
-        `"${document.querySelector(`input[data-city="${points[0]}"]`).value}" et ` +
-        `"${document.querySelector(`input[data-city="${points[1]}"]`).value}"`,
-        1
-      );
-
-      // Compute the midpoint on the longest route
-      window.$barry.log("Je calcule le point à mi-temps.", 1);
-      if (points.length > 1) {
-        calcPath_osm(
-          window.$barry.places[points[0]],
-          window.$barry.places[points[1]],
-          "",
-          true
-        ).then((res) => {
-          console.log(res)
-          // Traverse instructions to find where half of the route is reached
-          let currentInstructions = null;
-          const nbInstructions = res.routeInstructions.length;
-          let time = 0;
-          let km = 0;
-          const midTime = Math.round(maxTime / 2);
-          const midDist = Math.round(maxDist / 2);
-          for (let i = 0; i < nbInstructions; i++) {
-            km += Number.parseFloat(res.routeInstructions[i].distance);
-            time += Number.parseFloat(res.routeInstructions[i].duration);
-            currentInstructions = res.routeInstructions[i];
+    Promise.all(prms)
+      .then((values) => {
+        window.$barry.log("Je calcule les midpoints de tous les trajets !", 1);
+        const midpointPromises = values.map((val) => {
+          // Traverse existing routeInstructions to find midpoint
+          let timeAcc = 0;
+          let distAcc = 0;
+          let currentInstr = null;
+          const midTime = Math.round(parseFloat(val.totalTime) / 2);
+          const midDist = Math.round(parseFloat(val.totalDistance) / 2);
+          for (let i = 0; i < val.routeInstructions.length; i++) {
+            const instr = val.routeInstructions[i];
+            timeAcc += parseFloat(instr.duration);
+            distAcc += parseFloat(instr.distance);
+            currentInstr = instr;
             if (
-              ("time" === window.$barry.calculateMode && time > midTime) ||
-              ("distance" === window.$barry.calculateMode && km > midDist)
-            )
-              break;
+              (window.$barry.calculateMode === "time" && timeAcc >= midTime) ||
+              (window.$barry.calculateMode === "distance" && distAcc >= midDist)
+            ) break;
           }
-
-          // Calculate exact coordinate within the final instruction segment
-          if (currentInstructions != null) {
-            let delta = 0;
-            if ("time" === window.$barry.calculateMode) {
-              delta = (time - midTime) / Number.parseFloat(currentInstructions.duration);
-            } else if ("distance" === window.$barry.calculateMode) {
-              delta = (km - midDist) / Number.parseFloat(currentInstructions.distance);
-            }
-            window.$barry.log("Le point est trouvé.", 1);
-            resolve(
-              currentInstructions.geometry.coordinates[
-              Math.round((1 - delta) * currentInstructions.geometry.coordinates.length)
-              ]
-            );
+          // Compute exact interpolation within the instruction
+          let delta = 0;
+          if (window.$barry.calculateMode === "time") {
+            delta = (timeAcc - midTime) / parseFloat(currentInstr.duration);
+          } else {
+            delta = (distAcc - midDist) / parseFloat(currentInstr.distance);
           }
+          const coords = currentInstr.geometry.coordinates;
+          return coords[Math.round((1 - delta) * (coords.length - 1))];
         });
-      } else {
-        // No valid route pairs to compute
-        reject("Pas de point trouvé");
-      }
-    });
+        return Promise.all(midpointPromises);
+      })
+      .then((midpoints) => {
+        window.$barry.log("Je calcule le centre de tous les midpoints.", 1);
+        if (!midpoints.length) {
+          return reject("Pas de midpoints trouvés");
+        }
+        const sum = midpoints.reduce(
+          (acc, [lng, lat]) => [acc[0] + lng, acc[1] + lat],
+          [0, 0]
+        );
+        const center = [sum[0] / midpoints.length, sum[1] / midpoints.length];
+        window.$barry.log("Le centre est trouvé.", 1);
+        resolve(center);
+      })
+      .catch((err) => reject(err));
   });
 };
