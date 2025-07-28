@@ -14,44 +14,44 @@
 
   include welcome
 
-  .h3
-    span
-      svg.h-6.w-6(
-        xmlns="http://www.w3.org/2000/svg",
-        fill="none",
-        viewBox="0 0 24 24",
-        stroke="currentColor"
-      )
-        path(
-          stroke-linecap="round",
-          stroke-linejoin="round",
-          stroke-width="2",
-          d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
-        )
-      h3 Configuration
-      a#reduceConfiguration(href="javascript:window.$barry.toggleConfiguration();")
-        svg(
-          xmlns="http://www.w3.org/2000/svg",
-          viewBox="0 0 20 20",
-          fill="currentColor"
-        )
-          path(
-            fill-rule="evenodd",
-            d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z",
-            clip-rule="evenodd"
-          )
-      a#augmentConfiguration.hide(href="javascript:window.$barry.toggleConfiguration();")
-        svg(
-          xmlns="http://www.w3.org/2000/svg",
-          viewBox="0 0 20 20",
-          fill="currentColor"
-        )
-          path(
-            fill-rule="evenodd",
-            d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z",
-            clip-rule="evenodd"
-          )
-    #configuration
+  //- .h3
+  //-   span
+  //-     svg.h-6.w-6(
+  //-       xmlns="http://www.w3.org/2000/svg",
+  //-       fill="none",
+  //-       viewBox="0 0 24 24",
+  //-       stroke="currentColor"
+  //-     )
+  //-       path(
+  //-         stroke-linecap="round",
+  //-         stroke-linejoin="round",
+  //-         stroke-width="2",
+  //-         d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+  //-       )
+  //-     h3 Configuration
+  //-     a#reduceConfiguration(href="javascript:window.$barry.toggleConfiguration();")
+  //-       svg(
+  //-         xmlns="http://www.w3.org/2000/svg",
+  //-         viewBox="0 0 20 20",
+  //-         fill="currentColor"
+  //-       )
+  //-         path(
+  //-           fill-rule="evenodd",
+  //-           d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z",
+  //-           clip-rule="evenodd"
+  //-         )
+  //-     a#augmentConfiguration.hide(href="javascript:window.$barry.toggleConfiguration();")
+  //-       svg(
+  //-         xmlns="http://www.w3.org/2000/svg",
+  //-         viewBox="0 0 20 20",
+  //-         fill="currentColor"
+  //-       )
+  //-         path(
+  //-           fill-rule="evenodd",
+  //-           d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z",
+  //-           clip-rule="evenodd"
+  //-         )
+  //-   #configuration
       //- .form
       //-   label Calcul du mi-chemin en :
       //-   span temps
@@ -82,16 +82,16 @@
       //-     )
       //-     label(for="toggleCalcToll")
       //-   span non
-      .form
-        label Mode de calcul :
-        span center
-        .toggle
-          input#toggleCalcModeCenter(
-            type="checkbox",
-            onchange="window.$barry.changeCalcModeCenter();"
-          )
-          label(for="toggleCalcModeCenter")
-        span longest
+      //- .form
+      //-   label Mode de calcul :
+      //-   span center
+      //-   .toggle
+      //-     input#toggleCalcModeCenter(
+      //-       type="checkbox",
+      //-       onchange="window.$barry.changeCalcModeCenter();"
+      //-     )
+      //-     label(for="toggleCalcModeCenter")
+      //-   span longest
 
 
   .h3
