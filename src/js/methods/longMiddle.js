@@ -1,7 +1,7 @@
 // import { calcPath } from "../map/calcPath";
 import { calcPath_osm } from "../map/calcPath_osm";
 // Method to compute the midpoint of the longest path between all given places
-export const longMiddle = () => {
+export const longMiddle = (mode = 'center') => {
   return new Promise((resolve, reject) => {
     // Log start of multi-route computations
     window.$barry.log("Je calcule tous les chemins !", 1);
@@ -32,6 +32,35 @@ export const longMiddle = () => {
     // Once all routes are calculated, determine the longest one
     Promise.all(prms)
       .then((values) => {
+        // If mode is 'longest', find and compute only the midpoint of the longest route
+        if (mode === 'longest') {
+          window.$barry.log("Je calcule le midpoint du trajet le plus long.", 1);
+          // Determine longest route based on calculateMode
+          const longest = values.reduce((max, curr) =>
+            (window.$barry.calculateMode === "time"
+              ? parseFloat(curr.totalTime) > parseFloat(max.totalTime)
+              : parseFloat(curr.totalDistance) > parseFloat(max.totalDistance)
+            ) ? curr : max
+          , values[0]);
+          // Compute midpoint for the longest route
+          let timeAcc = 0, distAcc = 0, currentInstr = null;
+          const midTime = Math.round(parseFloat(longest.totalTime) / 2);
+          const midDist = Math.round(parseFloat(longest.totalDistance) / 2);
+          for (let i = 0; i < longest.routeInstructions.length; i++) {
+            const instr = longest.routeInstructions[i];
+            timeAcc += parseFloat(instr.duration);
+            distAcc += parseFloat(instr.distance);
+            currentInstr = instr;
+            if ((window.$barry.calculateMode === "time" && timeAcc >= midTime) ||
+                (window.$barry.calculateMode === "distance" && distAcc >= midDist)) break;
+          }
+          const delta = window.$barry.calculateMode === "time"
+            ? (timeAcc - midTime) / parseFloat(currentInstr.duration)
+            : (distAcc - midDist) / parseFloat(currentInstr.distance);
+          const coords = currentInstr.geometry.coordinates;
+          // Return a single midpoint coordinate
+          return [coords[Math.round((1 - delta) * (coords.length - 1))]];
+        }
         window.$barry.log("Je calcule les midpoints de tous les trajets !", 1);
         const midpointPromises = values.map((val) => {
           // Traverse existing routeInstructions to find midpoint
@@ -63,6 +92,12 @@ export const longMiddle = () => {
         return Promise.all(midpointPromises);
       })
       .then((midpoints) => {
+        // If mode is 'longest', resolve directly with that single midpoint
+        if (mode === 'longest') {
+          window.$barry.log("Le midpoint du trajet le plus long est trouvé.", 1);
+          // midpoints is an array with one coordinate
+          return resolve(midpoints[0]);
+        }
         window.$barry.log("Je calcule le centre de tous les midpoints.", 1);
         if (!midpoints.length) {
           return reject("Pas de midpoints trouvés");

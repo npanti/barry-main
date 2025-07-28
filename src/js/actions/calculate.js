@@ -34,7 +34,7 @@ window.$barry.calculate = () => {
   );
 
   // Define the three calculation methods and their corresponding weights
-  const methods = [longMiddle(), average(), center()];
+  const methods = [longMiddle(window.$barry.calculateModeCenter), average(), center()];
   const verbalMethods = ["longMiddle", "average", "center"];
   const weightMethods = [10, 2, 1];
 

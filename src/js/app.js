@@ -10,6 +10,7 @@ import "./actions/canPlace";
 import "./actions/changeCalcMode";
 import "./actions/changeCalcTransport";
 import "./actions/changeCalcToll";
+import "./actions/changeCalcModeCenter"
 import "./actions/changeLogMode";
 import "./actions/log";
 import "./actions/managePOI";

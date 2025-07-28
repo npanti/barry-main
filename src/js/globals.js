@@ -25,6 +25,7 @@ window.$barry = {
   calculateMode: "time",           // Calculation mode (e.g., by time)
   calculateTransport: "Voiture",   // Transport type (e.g., car)
   calculateToll: true,             // Whether to include tolls
+  calculateModeCenter: "center",      // Center calculation mode (e.g., by time)
 
   // Data containers
   addressesCount: 0,               // Number of addresses
