@@ -6,6 +6,7 @@ import { addPoint } from "../map/addPoint";
 import { longMiddle } from "../methods/longMiddle";
 import { average } from "../methods/average";
 import { center } from "../methods/center";
+import { barycenter } from "../methods/barycenter";
 
 // Main function activated when the user starts the calculation process
 window.$barry.calculate = () => {
@@ -34,8 +35,8 @@ window.$barry.calculate = () => {
   );
 
   // Define the three calculation methods and their corresponding weights
-  const methods = [longMiddle(window.$barry.calculateModeCenter), average(), center()];
-  const verbalMethods = ["longMiddle", "average", "center"];
+  const methods = [longMiddle(window.$barry.calculateModeCenter), average(), center(), barycenter()];
+  const verbalMethods = ["longMiddle", "average", "center", "barycenter"];
   const weightMethods = [10, 2, 1];
 
   // Run all methods in parallel and handle the results

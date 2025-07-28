@@ -1,3 +1,4 @@
+
 // Define a global object on the window called $barry to store all app-wide settings and references
 window.$barry = {
   // Calculation methods with their labels and colors
@@ -13,6 +14,10 @@ window.$barry = {
     center: {
       label: "Le centre du cadre dans lequel toutes les villes sont présentes",
       color: "#f59e0b",
+    },
+    barycenter: {
+      label: "Le barycentre des villes",
+      color: "#8b5cf6",
     },
   },
 
