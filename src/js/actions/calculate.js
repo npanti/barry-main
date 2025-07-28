@@ -13,7 +13,6 @@ window.$barry.calculate = () => {
   window.$barry.$logContent.innerHTML = "";
   window.$barry.$log.classList.remove("hide");
   window.$barry.$spinner.classList.remove("hide");
-  window.$barry.$rappel.classList.add("hide");
   
   // Build URL hash slug based on current mode and input addresses
   const slug = [];
@@ -37,7 +36,7 @@ window.$barry.calculate = () => {
   // Define the three calculation methods and their corresponding weights
   const methods = [longMiddle(), average(), center()];
   const verbalMethods = ["longMiddle", "average", "center"];
-  const weightMethods = [13, 0, 0];
+  const weightMethods = [10, 2, 1];
 
   // Run all methods in parallel and handle the results
   Promise.all(methods).then((values) => {
