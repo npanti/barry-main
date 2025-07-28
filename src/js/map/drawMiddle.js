@@ -19,13 +19,9 @@ export const drawMiddle = (middle, color, dest) => {
               window.$barry.roadColor,
               `route_${res.key}`
             );
+            console.log(res);
             window.$barry.log(
-              `
-<span onmouseenter="window.$barry.showNav('route_${res.key}', 1);"
-      onmouseleave="window.$barry.showNav('route_${res.key}', 0)"
-      onclick="window.$barry.zoom([[${res.bbox.top}, ${res.bbox.left}],[${res.bbox.bottom
-              }, ${res.bbox.right}]])"
->
+              `<span>
   De 
   <b>
     ${document.querySelector(`input[data-city="${keys[k]}"]`).value}
@@ -49,3 +45,9 @@ export const drawMiddle = (middle, color, dest) => {
     addPoint(middle[0], middle[1], color, dest);
   });
 };
+
+// <span onmouseenter="window.$barry.showNav('route_${res.key}', 1);"
+//       onmouseleave="window.$barry.showNav('route_${res.key}', 0)"
+//       onclick="window.$barry.zoom([[${res.bbox.top}, ${res.bbox.left}],[${res.bbox.bottom
+//               }, ${res.bbox.right}]])"
+// >
