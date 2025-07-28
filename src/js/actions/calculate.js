@@ -37,7 +37,7 @@ window.$barry.calculate = () => {
   // Define the three calculation methods and their corresponding weights
   const methods = [longMiddle(window.$barry.calculateModeCenter), average(), center(), barycenter()];
   const verbalMethods = ["longMiddle", "average", "center", "barycenter"];
-  const weightMethods = [10, 2, 1];
+  const weightMethods = [1, 1, 0.5, 0.5];
 
   // Run all methods in parallel and handle the results
   Promise.all(methods).then((values) => {
