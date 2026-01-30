@@ -15,7 +15,7 @@
 	"license": "GPL-3.0-or-later",
 	"devDependencies": {
 		"@prettier/plugin-pug": "3.2.0",
-		"eslint": "8.57.0",
+		"eslint": "9.26.0",
 		"less": "4.2.1",
 		"prettier": "3.4.2",
 		"pug": "3.0.3",
